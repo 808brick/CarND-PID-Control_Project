@@ -1,13 +1,15 @@
 # CarND-Controls-PID
 This project implements a PID controller to determine the steering angle output for a car driving around a race track in simulation.
 
+![Simulation GIF](images/PID_simulation.gif)
+
 ## PID Controller Overview
 A PID controller is a common controller used for controlling actuation based off a desired goal and feedback coming from the system. PID controllers generally look at the error of the system (current state versus the desired state), and change the output signal based off the tuned PID parameters.
 
 Throughout this explanation I will be using image references from The University of Michigan's [Control Tutorials PID page](http://ctms.engin.umich.edu/) under the Creative Commons Attribution-ShareAlike License. Check out their page for PID implementations using MATLAB.
 
 Here is an exmple of well tuned PID controller may look like.
-![Proportional Controller](images/PID.png)
+![PID Controller](images/PID.png)
 
 In this case, an Amplitude of 1 is the goal, and we are able to quickly get within range of the goal without any overshoot.
 
@@ -23,7 +25,7 @@ Imagine this graph represents the altitude of a drone. If the dotted line was th
 #### I - Integral
 A integral in calculus can be used to find the area under the curve. Since our controller is monitoring the signal over time, the integral portion of a PID heavily affected by time. It essentially takes a look at how much error there has been over time, so if there has been a lot of error recently, heavily amplify the signal such that it leans towards the objective. If there hasn't been a lot of error recently, then decrease the amount of signal change output. An example of implementing a Integral parameter to our proportional controller in the above section can be seen below.
 
-![Proportional Controller](images/PID_PI_only.png)
+![Integral Controller](images/PID_PI_only.png)
 
 Notice how overshoot was drastically decreased. However, also note that it increased the time it took for the signal to "settle". One thing to note is including the integral term tends to increase performance of your PID controller really well if working in an environment with varying external disturbances, or if there are biases/offsets in your signal.
 
@@ -31,7 +33,7 @@ Notice how overshoot was drastically decreased. However, also note that it incre
 A derivative in calculus is used to find the rate of change function. The derivative parameter of a PID controller is used to monitor the rate of change of the error. The below image is when we had a derivative portion to out proportional controller that was shown in the Proportional section.
 
 
-![Proportional Controller](images/PID_PD_only.png)
+![Derivative Controller](images/PID_PD_only.png)
 
 In comparison to proportional alone, the derivative parameter helped decrease the overshoot, and settled quicker.
 
@@ -43,7 +45,17 @@ The parameters for a PID controller with vary greatly from application to applic
 Here S-S Error stands for Steady State error, which refers to the error when the system reaches equilibrium (experiences little to no change in amplitude). This table is a good reference when tuning your PID. For example, if I was seeing heavy overshoot in my system, I may be inclined to decrease the proportional, decrease the integral, and increase the derivative parameters in my PID controller. If I fix my overshoot problem, but want to decrease the rise time, I may be inclined to increase my proportional and integral parameters even more, but leave the derivative parameter where it is.  
 
 ## Implementing PID In This Project
+The PID in this project is implements to following parameter values:
 
+| Parameter  | Value  |
+|-|-|
+| Proportional  |  0.14 |
+| Integral  | 0  |
+| Derivative | 1.2  |
+
+Notice the Integral value is set to 0, which essentially makes this a PD controller instead. The reasoning behind this was that in the simulation, there were no offsets or external disturbances which caused the car to not steer where we wanted it to, thus it did not make much sense to do so. Implementing the Integral portion (even incredibly small values) mainly lead to longer oscillation times, and a delay in settling, causing the car to not be prepared if a sharp turn came up.The proportional value mainly plays the role of ensuring the car can turn enough, is relevance to the error, too little a value cause the car to not turn enough and fall off the road, too large a value caused the car to overturn causing huge oscillation which spanned larger than the lane width. Increasing the derivative parameter helped with dampening the oscilations and allow for smoother turning. My PID code can be viewed in `PID.cpp`.
+
+A video of the car completing the entire track can be viewed in `videos/PID_project.mp4`
 
 ---
 

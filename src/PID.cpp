@@ -41,12 +41,12 @@ double PID::TotalError() {
 
   // From Udacity classroom PID implmentation: steer = -tau_p * cte - tau_d * diff_cte - tau_i * int_cte
   double steer = -1 * Kp * p_error - Kd * d_error - Ki * i_error;
-  std::cout <<  steer << std::endl;
+  //std::cout <<  steer << std::endl; // Used for debugging
 
-  if (steer > 1){
+  if (steer > 1){ //Ensure we do not overshoot [-1,1] range
     return 1.0;
   }
-  else if (steer < 1){
+  else if (steer < -1){
     return -1.0;
   }
 
