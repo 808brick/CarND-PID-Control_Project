@@ -49,13 +49,13 @@ The PID in this project is implements to following parameter values:
 
 | Parameter  | Value  |
 |-|-|
-| Proportional  |  0.14 |
-| Integral  | 0  |
-| Derivative | 1.2  |
+| Proportional  |  0.13 |
+| Integral  | 0.005  |
+| Derivative | 0.7  |
 
-Notice the Integral value is set to 0, which essentially makes this a PD controller instead. The reasoning behind this was that in the simulation, there were no offsets or external disturbances which caused the car to not steer where we wanted it to, thus it did not make much sense to do so. Implementing the Integral portion (even incredibly small values) mainly lead to longer oscillation times, and a delay in settling, causing the car to not be prepared if a sharp turn came up.The proportional value mainly plays the role of ensuring the car can turn enough, is relevance to the error, too little a value cause the car to not turn enough and fall off the road, too large a value caused the car to overturn causing huge oscillation which spanned larger than the lane width. Increasing the derivative parameter helped with dampening the oscilations and allow for smoother turning. My PID code can be viewed in `PID.cpp`.
+Implementing the Integral portion (even incredibly small values) mainly lead to longer oscillation times, and a delay in settling, causing the car to not be prepared if a sharp turn came up.The proportional value mainly plays the role of ensuring the car can turn enough, is relevance to the error, too little a value cause the car to not turn enough and fall off the road, too large a value caused the car to overturn causing huge oscillation which spanned larger than the lane width. Increasing the derivative parameter helped with dampening the oscilations and allow for smoother turning. My PID code can be viewed in `PID.cpp`.
 
-A video of the car completing the entire track can be viewed in `videos/PID_project.mp4`
+A video of the car completing the entire simulation track can be viewed in `videos/PID_project.mp4`
 
 ---
 
